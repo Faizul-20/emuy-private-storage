@@ -1,5 +1,6 @@
 package com.example.MyPrivateServer.ServiceImp;
 
+import com.example.MyPrivateServer.DTOS.FileResponse;
 import com.example.MyPrivateServer.Entity.MyFile;
 import com.example.MyPrivateServer.Repository.MyFileRepository;
 import com.example.MyPrivateServer.Service.MyFileService;
@@ -13,7 +14,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.time.ZoneId;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class MyFileServiceImp implements MyFileService {
 
@@ -31,9 +36,30 @@ public class MyFileServiceImp implements MyFileService {
         return fileRepository.existsByFileName(filename);
     }
 
+    @Transactional
     @Override
-    public List<MyFile> getAllFiles() {
-        return fileRepository.findAll();
+    public List<FileResponse> getAllFiles() {
+
+         List<FileResponse> files = fileRepository.findAll().stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+
+         for (FileResponse file : files) {
+             System.out.println("Data Yang Diimport   : " + file);
+         }
+
+         return files;
+    }
+
+    private FileResponse mapToDTO(MyFile file) {
+        FileResponse dto = new FileResponse();
+        dto.setFileId(file.getFileId());
+        dto.setFileName(file.getFileName());
+        dto.setFileType(file.getFileType());
+        dto.setFileSize(file.getFileSize());
+        dto.setStarred(file.getStarred() != null ? file.getStarred() : false);
+        dto.setFileCreatedAt(file.getFileCreatedAt());
+        return dto;
     }
 
     @Transactional
@@ -46,6 +72,7 @@ public class MyFileServiceImp implements MyFileService {
         String fileName = multipartFile.getOriginalFilename();
 
         if (existFile(fileName)) {
+            System.out.println("File already exists");
             throw new IllegalStateException("File already exists");
         }
 
@@ -53,11 +80,19 @@ public class MyFileServiceImp implements MyFileService {
         Path uploadDir = Paths.get("./TempData").toAbsolutePath();
         // Cek Ada Nggak Filenya
         if (!Files.exists(uploadDir)) {
+            System.out.println("Creating temp directory: " + uploadDir.toAbsolutePath());
             Files.createDirectories(uploadDir);
         }
 
         // Buat path tujuan
         Path destinationPath = uploadDir.resolve(fileName);
+        //Pastikan Path Benar
+        if (!destinationPath.startsWith(uploadDir)) {
+            System.out.println("Invalid file path detected");
+            throw new SecurityException("Invalid file path detected");
+
+        }
+
         Files.copy(multipartFile.getInputStream(), destinationPath, StandardCopyOption.REPLACE_EXISTING);
 
         // Set atribut entity
@@ -70,5 +105,7 @@ public class MyFileServiceImp implements MyFileService {
         // Simpan metadata ke DB
         upload(file);
     }
+
+
 
 }

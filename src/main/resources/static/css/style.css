@@ -6,6 +6,15 @@
     box-sizing: border-box;
 }
 
+:root {
+    --header-height: 90px;
+    --sidebar-width: 280px;
+    --container-padding: 20px;
+    --element-spacing: 15px;
+    --border-radius: 12px;
+    --transition: all 0.3s ease;
+}
+
 body {
     font-family: 'Noto Serif', serif;
     background: linear-gradient(135deg, #1a1f3a 0%, #2d1b3d 50%, #1f2937 100%);
@@ -46,17 +55,20 @@ header {
     position: relative;
     z-index: 10;
     background: linear-gradient(90deg, rgba(26, 31, 58, 0.95), rgba(45, 27, 61, 0.95));
-    padding: 20px 40px;
+    padding: 15px var(--container-padding);
     border-bottom: 2px solid rgba(255, 215, 130, 0.3);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    min-height: var(--header-height);
 }
 
 .logo {
     font-family: 'Cinzel', serif;
-    font-size: 28px;
+    font-size: clamp(20px, 5vw, 28px);
     font-weight: 700;
     background: linear-gradient(135deg, #ffd782 0%, #ff9966 100%);
     -webkit-background-clip: text;
@@ -65,11 +77,12 @@ header {
     display: flex;
     align-items: center;
     gap: 12px;
+    white-space: nowrap;
 }
 
 .logo::before {
     content: '✦';
-    font-size: 32px;
+    font-size: clamp(24px, 6vw, 32px);
     animation: pulse 2s infinite;
 }
 
@@ -80,21 +93,22 @@ header {
 
 .search-container {
     flex: 1;
+    min-width: 200px;
     max-width: 600px;
-    margin: 0 40px;
+    margin: 0 20px;
     position: relative;
 }
 
 .search-bar {
     width: 100%;
-    padding: 14px 50px 14px 20px;
+    padding: 12px 45px 12px 15px;
     background: rgba(255, 255, 255, 0.05);
     border: 2px solid rgba(255, 215, 130, 0.3);
     border-radius: 25px;
     color: #e8e5d9;
-    font-size: 16px;
+    font-size: clamp(14px, 2vw, 16px);
     font-family: 'Noto Serif', serif;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     box-shadow: 0 0 20px rgba(255, 215, 130, 0.1);
 }
 
@@ -107,24 +121,25 @@ header {
 
 .search-icon {
     position: absolute;
-    right: 20px;
+    right: 15px;
     top: 50%;
     transform: translateY(-50%);
     color: #ffd782;
-    font-size: 20px;
+    font-size: clamp(16px, 4vw, 20px);
     pointer-events: none;
 }
 
 .user-profile {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
     cursor: pointer;
-    padding: 8px 16px;
+    padding: 8px 12px;
     border-radius: 25px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 215, 130, 0.2);
-    transition: all 0.3s ease;
+    transition: var(--transition);
+    white-space: nowrap;
 }
 
 .user-profile:hover {
@@ -133,8 +148,8 @@ header {
 }
 
 .user-avatar {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     display: flex;
@@ -142,6 +157,7 @@ header {
     justify-content: center;
     font-weight: 600;
     box-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
+    font-size: clamp(14px, 3vw, 16px);
 }
 
 /* Main Container */
@@ -149,36 +165,38 @@ header {
     position: relative;
     z-index: 1;
     display: flex;
-    height: calc(100vh - 90px);
+    flex-direction: column;
+    height: calc(100vh - var(--header-height));
 }
 
 /* Sidebar */
 .sidebar {
-    width: 280px;
+    width: 100%;
     background: linear-gradient(180deg, rgba(26, 31, 58, 0.85), rgba(45, 27, 61, 0.85));
     border-right: 2px solid rgba(255, 215, 130, 0.2);
-    padding: 30px 20px;
+    padding: 20px 15px;
     box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
     overflow-y: auto;
+    max-height: 300px;
 }
 
 .upload-btn {
     width: 100%;
-    padding: 16px 24px;
+    padding: 14px 20px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
-    border-radius: 12px;
+    border-radius: var(--border-radius);
     color: white;
-    font-size: 16px;
+    font-size: clamp(14px, 3vw, 16px);
     font-weight: 600;
     font-family: 'Cinzel', serif;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-    transition: all 0.3s ease;
+    transition: var(--transition);
     position: relative;
     overflow: hidden;
 }
@@ -212,27 +230,27 @@ header {
 }
 
 .nav-section {
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .nav-title {
     font-family: 'Cinzel', serif;
-    font-size: 14px;
+    font-size: clamp(12px, 3vw, 14px);
     color: #ffd782;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
 }
 
 .nav-item {
     display: flex;
     align-items: center;
-    gap: 15px;
-    padding: 14px 16px;
-    margin-bottom: 8px;
+    gap: 12px;
+    padding: 12px 14px;
+    margin-bottom: 6px;
     border-radius: 10px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid transparent;
 }
@@ -250,14 +268,15 @@ header {
 }
 
 .element-icon {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: clamp(14px, 3vw, 18px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    flex-shrink: 0;
 }
 
 .anemo {
@@ -286,20 +305,20 @@ header {
 }
 
 .storage-info {
-    margin-top: 40px;
-    padding: 20px;
+    margin-top: 25px;
+    padding: 15px;
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
+    border-radius: var(--border-radius);
     border: 1px solid rgba(255, 215, 130, 0.2);
 }
 
 .storage-bar {
     width: 100%;
-    height: 8px;
+    height: 6px;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     overflow: hidden;
-    margin-top: 10px;
+    margin-top: 8px;
 }
 
 .storage-fill {
@@ -313,7 +332,7 @@ header {
 /* Main Content */
 .main-content {
     flex: 1;
-    padding: 40px;
+    padding: 20px;
     overflow-y: auto;
 }
 
@@ -321,12 +340,14 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .content-title {
     font-family: 'Cinzel', serif;
-    font-size: 32px;
+    font-size: clamp(24px, 6vw, 32px);
     background: linear-gradient(135deg, #ffd782 0%, #ff9966 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -334,17 +355,18 @@ header {
 
 .view-options {
     display: flex;
-    gap: 10px;
+    gap: 8px;
 }
 
 .view-btn {
-    padding: 10px 16px;
+    padding: 8px 12px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 215, 130, 0.2);
     border-radius: 8px;
     color: #e8e5d9;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition);
+    font-size: clamp(12px, 2.5vw, 14px);
 }
 
 .view-btn:hover, .view-btn.active {
@@ -355,58 +377,61 @@ header {
 /* File Grid */
 .file-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 25px;
-    margin-top: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
 }
 
 /* File List View */
 .file-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-top: 20px;
+    gap: 10px;
+    margin-top: 15px;
 }
 
 .file-list .file-card {
     display: flex;
     align-items: center;
-    padding: 16px 24px;
-    gap: 20px;
+    padding: 12px 15px;
+    gap: 15px;
 }
 
 .file-list .file-icon {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     margin: 0;
-    font-size: 32px;
+    font-size: 24px;
 }
 
 .file-list .file-info {
     flex: 1;
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
 .file-list .file-name {
     flex: 1;
     text-align: left;
     margin: 0;
+    min-width: 120px;
 }
 
 .file-list .file-meta {
-    gap: 20px;
-    min-width: 200px;
+    gap: 10px;
+    min-width: 150px;
+    font-size: 12px;
 }
 
 .file-card {
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
     border: 2px solid rgba(255, 215, 130, 0.2);
-    border-radius: 16px;
-    padding: 20px;
+    border-radius: var(--border-radius);
+    padding: 15px;
     cursor: pointer;
-    transition: all 0.4s ease;
+    transition: var(--transition);
     position: relative;
     overflow: hidden;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
@@ -429,30 +454,30 @@ header {
 }
 
 .file-card:hover {
-    transform: translateY(-8px) scale(1.02);
+    transform: translateY(-5px) scale(1.02);
     border-color: #ffd782;
     box-shadow: 0 15px 40px rgba(255, 215, 130, 0.3);
 }
 
 .file-icon {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 15px;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 48px;
+    font-size: 32px;
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
-    border-radius: 12px;
+    border-radius: 10px;
     position: relative;
     z-index: 1;
 }
 
 .file-name {
-    font-size: 16px;
+    font-size: clamp(14px, 3vw, 16px);
     font-weight: 600;
     color: #e8e5d9;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -460,12 +485,13 @@ header {
 }
 
 .file-meta {
-    font-size: 12px;
+    font-size: 11px;
     color: #a0a0a0;
     text-align: center;
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 /* Modal */
@@ -480,6 +506,7 @@ header {
     z-index: 1000;
     justify-content: center;
     align-items: center;
+    padding: 15px;
 }
 
 .modal.active {
@@ -488,13 +515,15 @@ header {
 
 .modal-content {
     background: linear-gradient(145deg, rgba(26, 31, 58, 0.98), rgba(45, 27, 61, 0.98));
-    padding: 40px;
-    border-radius: 20px;
+    padding: 25px;
+    border-radius: 16px;
     max-width: 500px;
-    width: 90%;
+    width: 100%;
     border: 2px solid rgba(255, 215, 130, 0.3);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
     animation: modalSlideIn 0.4s ease;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 @keyframes modalSlideIn {
@@ -510,18 +539,18 @@ header {
 
 .modal-title {
     font-family: 'Cinzel', serif;
-    font-size: 24px;
-    margin-bottom: 25px;
+    font-size: clamp(20px, 5vw, 24px);
+    margin-bottom: 20px;
     color: #ffd782;
 }
 
 .upload-area {
     border: 3px dashed rgba(255, 215, 130, 0.4);
-    border-radius: 12px;
-    padding: 50px 30px;
+    border-radius: 10px;
+    padding: 30px 20px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     background: rgba(255, 255, 255, 0.02);
 }
 
@@ -531,19 +560,19 @@ header {
 }
 
 .upload-icon {
-    font-size: 64px;
-    margin-bottom: 15px;
+    font-size: clamp(40px, 10vw, 64px);
+    margin-bottom: 12px;
     opacity: 0.7;
 }
 
 .close-modal {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 28px;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
     cursor: pointer;
     color: #a0a0a0;
-    transition: color 0.3s ease;
+    transition: var(--transition);
 }
 
 .close-modal:hover {
@@ -552,30 +581,34 @@ header {
 
 .upload-button{
     display: flex;
-    margin-top: 20px;
+    margin-top: 15px;
     justify-content: center;
     align-items: center;
-    gap: 100px;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 .upload-button > *{
-    padding: 12px 20px;
+    padding: 10px 16px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     color: white;
-    font-size: 12px;
+    font-size: clamp(12px, 2.5vw, 14px);
     font-weight: 200;
     font-family: 'Cinzel', serif;
     cursor: pointer;
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-    transition: all 0.3s ease;
+    transition: var(--transition);
     position: relative;
     overflow: hidden;
+    flex: 1;
+    min-width: 100px;
+    max-width: 150px;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -591,7 +624,6 @@ header {
     background: linear-gradient(180deg, #764ba2, #667eea);
 }
 
-
 /*Login Style*/
 
 .login-area{
@@ -599,20 +631,22 @@ header {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
 }
 
 .Welcome-Text{
-    font-size: 30px;
+    font-size: clamp(24px, 6vw, 30px);
+    text-align: center;
 }
 
 .login-card {
-    margin-top: 50px;
+    margin-top: 30px;
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
     border: 2px solid rgba(255, 215, 130, 0.2);
     border-radius: 16px;
     padding: 20px;
-
-
 }
 
 .card-body {
@@ -620,22 +654,22 @@ header {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
     width: 100%;
 }
 .card-body > * {
     text-align: center;
-    width: 80%; /*Untuk yang di dalam card*/
+    width: 100%;
 }
 
 .login-button {
     width: 100%;
-    padding: 10px 18px;
+    padding: 12px 18px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
     border-radius: 12px;
     color: white;
-    font-size: 16px;
+    font-size: clamp(14px, 3vw, 16px);
     font-weight: 600;
     font-family: 'Cinzel', serif;
     cursor: pointer;
@@ -643,7 +677,7 @@ header {
     align-items: center;
     justify-content: center;
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-    transition: all 0.3s ease;
+    transition: var(--transition);
 }
 
 .login-button:hover {
@@ -654,12 +688,12 @@ header {
 
 .input {
     width: 100%;
-    padding: 14px 20px;
+    padding: 12px 16px;
     background: rgba(255, 255, 255, 0.05);
     border: 2px solid rgba(255, 215, 130, 0.3);
     border-radius: 25px;
     color: #e8e5d9;
-    font-size: 16px;
+    font-size: clamp(14px, 3vw, 16px);
     font-family: 'Noto Serif', serif;
     box-shadow: 0 0 20px rgba(255, 215, 130, 0.1);
 }
@@ -682,7 +716,7 @@ header {
     align-items: center;
     justify-content: center;
     margin-top: 10px;
-    gap: 20px;
+    gap: 15px;
 }
 
 .forgot-password  a{
@@ -690,6 +724,7 @@ header {
     color: white;
     text-align: center;
     text-decoration: none;
+    font-size: clamp(12px, 2.5vw, 14px);
 }
 
 .forgot-password a:hover{
@@ -698,4 +733,408 @@ header {
 a.login-link {
     text-decoration: none;
     color: inherit;
+}
+
+/*===================Alert Custom==================*/
+.custom-alert {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(10, 10, 25, 0.8);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(6px);
+    padding: 15px;
+}
+
+.custom-alert.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.custom-alert-content {
+    background: radial-gradient(circle at top, #3a3270, #1b1b3f);
+    color: #ffd782;
+    padding: 40px 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(255, 215, 130, 0.3),
+    0 0 80px rgba(100, 100, 255, 0.2);
+    font-family: "Segoe UI", sans-serif;
+    transform: scale(0.6);
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    max-width: 500px;
+    width: 100%;
+    animation: floatUp 0.5s ease-out forwards;
+}
+
+.custom-alert.show .custom-alert-content {
+    transform: scale(1);
+}
+
+@keyframes floatUp {
+    from {
+        transform: translateY(30px) scale(0.6);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.genshin-icon {
+    font-size: clamp(50px, 12vw, 80px);
+    margin-bottom: 15px;
+    text-shadow: 0 0 20px rgba(255, 215, 130, 0.7);
+}
+
+.custom-alert-content p {
+    font-size: clamp(16px, 4vw, 24px);
+    font-weight: 500;
+    line-height: 1.6;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+/*===================Progress Bar=====================*/
+.progress-circle {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.progress-circle svg {
+    transform: rotate(-90deg);
+    width: 100px;
+    height: 100px;
+}
+
+.progress-circle circle {
+    fill: none;
+    stroke-width: 8;
+    stroke-linecap: round;
+}
+
+.progress-circle circle:first-child {
+    stroke: #2e2e2e;
+}
+
+#progress-ring {
+    stroke: #00bfff;
+    stroke-dasharray: 314;
+    stroke-dashoffset: 314;
+    transition: stroke-dashoffset 0.3s ease;
+}
+
+.progress-value {
+    position: absolute;
+    color: #ffd782;
+    font-family: "Segoe UI", sans-serif;
+    font-weight: bold;
+    font-size: clamp(16px, 4vw, 22px);
+}
+
+/* ==================== MEDIA QUERIES ==================== */
+
+/* Tablet Layout */
+@media (min-width: 768px) {
+    :root {
+        --sidebar-width: 250px;
+        --container-padding: 30px;
+    }
+
+    .container {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        width: var(--sidebar-width);
+        max-height: none;
+        padding: 30px 20px;
+    }
+
+    .file-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .upload-button {
+        gap: 50px;
+    }
+
+    .modal {
+        padding: 30px;
+    }
+
+    .main-content {
+        padding: 30px;
+    }
+}
+
+/* Desktop Layout */
+@media (min-width: 1024px) {
+    :root {
+        --sidebar-width: 280px;
+        --container-padding: 40px;
+    }
+
+    header {
+        padding: 20px var(--container-padding);
+    }
+
+    .sidebar {
+        padding: 30px 20px;
+    }
+
+    .main-content {
+        padding: 30px 40px;
+    }
+
+    .file-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 25px;
+    }
+
+    .upload-button {
+        gap: 100px;
+    }
+
+    .file-list .file-card {
+        padding: 16px 24px;
+        gap: 20px;
+    }
+
+    .file-list .file-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 32px;
+    }
+
+    .file-list .file-info {
+        gap: 30px;
+    }
+
+    .file-list .file-meta {
+        min-width: 200px;
+    }
+
+    .file-icon {
+        width: 80px;
+        height: 80px;
+        font-size: 48px;
+    }
+
+    .modal-content {
+        padding: 40px;
+    }
+}
+
+/* Large Desktop */
+@media (min-width: 1440px) {
+    .search-container {
+        margin: 0 40px;
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+}
+
+/* Small Mobile Adjustments */
+@media (max-width: 480px) {
+    .file-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 12px;
+    }
+
+    .file-card {
+        padding: 12px;
+    }
+
+    .file-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+    }
+
+    .file-list .file-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .file-list .file-meta {
+        min-width: auto;
+        font-size: 11px;
+    }
+
+    .upload-button > * {
+        min-width: 80px;
+        padding: 8px 12px;
+    }
+
+    .custom-alert-content {
+        padding: 30px 20px;
+    }
+
+    .modal-content {
+        padding: 20px 15px;
+    }
+
+    .upload-area {
+        padding: 25px 15px;
+    }
+
+    .nav-item {
+        padding: 10px 12px;
+    }
+
+    .element-icon {
+        width: 24px;
+        height: 24px;
+        font-size: 14px;
+    }
+
+    .logo-text {
+        display: none;
+    }
+}
+
+/* Very Small Screens */
+@media (max-width: 360px) {
+    .file-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .view-options {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .content-header {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .content-title {
+        width: 100%;
+    }
+
+    .search-container {
+        margin: 0 10px;
+    }
+
+    .user-name {
+        display: none;
+    }
+
+    .logo img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .storage-info {
+        padding: 12px;
+    }
+
+    .nav-text {
+        font-size: 12px;
+    }
+}
+
+/* Tablet Landscape & Small Laptops */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .sidebar {
+        width: 220px;
+    }
+
+    .file-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+
+    .main-content {
+        padding: 25px 30px;
+    }
+}
+
+/* High Resolution Displays */
+@media (min-width: 1440px) {
+    .file-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+}
+
+/* Print Styles */
+@media print {
+    .sidebar, .user-profile, .view-options, .upload-btn {
+        display: none;
+    }
+
+    .file-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .file-card {
+        break-inside: avoid;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #0f1120 0%, #1a0f23 50%, #0f141f 100%);
+    }
+}
+
+/* Reduced Motion for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .particle, .file-card, .upload-btn, .nav-item {
+        animation: none;
+        transition: none;
+    }
+
+    .custom-alert-content {
+        animation: none;
+    }
+}
+
+/* Orientation Specific */
+@media (max-width: 768px) and (orientation: landscape) {
+    .sidebar {
+        max-height: 200px;
+    }
+
+    .container {
+        height: auto;
+        min-height: 100vh;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .file-card:hover {
+        transform: none;
+    }
+
+    .nav-item:hover {
+        transform: none;
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    .upload-btn:hover {
+        transform: none;
+    }
+
+    .file-card:active {
+        transform: scale(0.98);
+    }
 }

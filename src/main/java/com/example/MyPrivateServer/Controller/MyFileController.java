@@ -1,38 +1,43 @@
 package com.example.MyPrivateServer.Controller;
 
-import com.example.MyPrivateServer.Service.MyFileService;
-import jakarta.servlet.http.HttpSession;
+import com.example.MyPrivateServer.DTOS.FileResponse;
+import com.example.MyPrivateServer.Entity.MyFile;
+import com.example.MyPrivateServer.ServiceImp.MyFileServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.List;
 
-
-@Controller
+@RestController
+@CrossOrigin(origins = "*") // Tambahkan annotation ini
 public class MyFileController {
 
     @Autowired
-    private MyFileService fileService;
+    private MyFileServiceImp fileService;
 
+    // PERBAIKAN: Ubah parameter name dari "file" menjadi "files"
     @PostMapping("/upload")
-    public String uploadFile(@ModelAttribute com.example.MyPrivateServer.Entity.MyFile file,
-                             @RequestParam("file") MultipartFile multipartFile,
-                             HttpSession session) {
-
+    public ResponseEntity<String> uploadFile(@RequestParam("files") MultipartFile[] files) {
         try {
-            fileService.uploadFile(file, multipartFile); // ← delegasi ke service
-            session.setAttribute("successMassage", "File Uploaded Successfully");
-        } catch (IllegalStateException e) {
-            session.setAttribute("errorMassage", e.getMessage());
-        } catch (Exception e) {
-            session.setAttribute("errorMassage", "File Upload Failed: " + e.getMessage());
-        }
+            for (MultipartFile file : files) {
+                MyFile myFile = new MyFile();
+                fileService.uploadFile(myFile, file);
+            }
+            return ResponseEntity.ok("Java : Files uploaded successfully");
 
-        return "redirect:/dashboard";
+        } catch (Exception exception) {
+            System.out.println("Java : Error : " + exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("File Upload Failed : " + exception.getMessage());
+        }
     }
 
-
+    @GetMapping(value = "/load_files", produces = "application/json")
+    public List<FileResponse> getAllFiles() {
+        return fileService.getAllFiles();
+    }
 }

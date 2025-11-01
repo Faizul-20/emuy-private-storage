@@ -14,8 +14,8 @@
 <!-- Header -->
 <header>
     <div class="logo">
-        <img src="/img/imgLogo.png" alt="Emuy Logo" width="50px" height="50px">
-        Emuy Cloud
+        <img src="/img/imgLogo.png" alt="Emuy Logo" width="50" height="50">
+        <span class="logo-text">Emuy Storage</span>
     </div>
     <div class="search-container">
         <input type="text" class="search-bar" placeholder="Search files across all regions..." id="searchInput">
@@ -23,7 +23,7 @@
     </div>
     <div class="user-profile">
         <div class="user-avatar">E</div>
-        <span>Emuy</span>
+        <span class="user-name">Emuy</span>
     </div>
 </header>
 
@@ -31,34 +31,32 @@
 <div class="container">
     <!-- Sidebar -->
     <aside class="sidebar">
-
-        <!-- Ganti Punya Java-->
         <button class="upload-btn" onclick="openUploadModal()">
-            <span>✦</span>
-            <span>Teleport Files</span>
+            <span class="upload-icon">✦</span>
+            <span class="upload-text">Teleport Files</span>
         </button>
 
         <div class="nav-section">
             <div class="nav-title">Regions</div>
             <div class="nav-item active" data-filter="all">
                 <div class="element-icon anemo">☁</div>
-                <span>All Files</span>
+                <span class="nav-text">All Files</span>
             </div>
             <div class="nav-item" data-filter="recent">
                 <div class="element-icon electro">⚡</div>
-                <span>Recent</span>
+                <span class="nav-text">Recent</span>
             </div>
             <div class="nav-item" data-filter="starred">
                 <div class="element-icon pyro">★</div>
-                <span>Starred</span>
+                <span class="nav-text">Starred</span>
             </div>
             <div class="nav-item" data-filter="shared">
                 <div class="element-icon hydro">◈</div>
-                <span>Shared</span>
+                <span class="nav-text">Shared</span>
             </div>
-            <div class="nav-item" data-filter="shared">
+            <div class="nav-item" data-filter="trash">
                 <div class="element-icon trash">🗑️</div>
-                <span>Trash</span>
+                <span class="nav-text">Trash</span>
             </div>
         </div>
 
@@ -66,22 +64,21 @@
             <div class="nav-title">Elements</div>
             <div class="nav-item" data-filter="documents">
                 <div class="element-icon geo">📄</div>
-                <span>Documents</span>
+                <span class="nav-text">Documents</span>
             </div>
             <div class="nav-item" data-filter="images">
                 <div class="element-icon cryo">🖼</div>
-                <span>Images</span>
+                <span class="nav-text">Images</span>
             </div>
             <div class="nav-item" data-filter="videos">
                 <div class="element-icon dendro">🎬</div>
-                <span>Videos</span>
+                <span class="nav-text">Videos</span>
             </div>
         </div>
 
         <div class="storage-info">
-            <div style="font-size: 14px; margin-bottom: 8px;">Storage Used</div>
-            <div style="font-size: 20px; font-weight: 600; color: #ffd782;">4.5 GB <span
-                    style="font-size: 14px; color: #a0a0a0;">of 10 GB</span></div>
+            <div class="storage-title">Storage Used</div>
+            <div class="storage-size">4.5 GB <span class="storage-total">of 10 GB</span></div>
             <div class="storage-bar">
                 <div class="storage-fill"></div>
             </div>
@@ -93,11 +90,11 @@
         <div class="content-header">
             <h1 class="content-title">My Files</h1>
             <div class="view-options">
-                <button class="view-btn active">⊞ Grid</button>
-                <button class="view-btn">☰ List</button>
+                <button class="view-btn active" id="btn-grid">⊞ Grid</button>
+                <button class="view-btn" id="btn-list">☰ List</button>
             </div>
         </div>
-        <!--TODO :Ubah Menggunakan yang sebelumnya JS ke Java-->
+
         <div class="file-grid" id="fileGrid">
             <!-- Files will be dynamically loaded here -->
         </div>
@@ -110,20 +107,34 @@
         <span class="close-modal" onclick="closeUploadModal()">×</span>
         <h2 class="modal-title">✦ Teleport New Files</h2>
 
-        <!--Methode Upload Thymeleaf-->
-        <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
-            <input type="file" id="fileInput" style="display: none;" name="file" required>
+        <form id="uploadForm" onsubmit="submitUploadForm(event)">
+            <input
+                    type="file"
+                    id="fileInput"
+                    style="display: none;"
+                    name="file"
+                    required
+                    onchange="saveSelectedFiles(event)"
+            >
             <label for="fileInput">
                 <div class="upload-area">
                     <div class="upload-icon">⬆</div>
-                    <p style="font-size: 18px; margin-bottom: 10px;">Click to select files</p>
-                    <p style="font-size: 14px; color: #a0a0a0;">or drag and drop here</p>
+                    <p class="upload-text-primary">Click to select files</p>
+                    <p class="upload-text-secondary">or drag and drop here</p>
+
+                    <div class="progress-circle" id="progressCircle" style="display: none;">
+                        <svg>
+                            <circle cx="60" cy="60" r="50"></circle>
+                            <circle id="progress-ring" cx="60" cy="60" r="50"></circle>
+                        </svg>
+                        <div class="progress-value" id="progress-text">0%</div>
+                    </div>
                 </div>
             </label>
 
             <div class="upload-button">
-                <button class="submit">Upload</button>
-                <button class="cancel" onclick="closeUploadModal()">Cancel</button>
+                <button type="submit" class="submit">Upload</button>
+                <button type="button" class="cancel" onclick="closeUploadModal()">Cancel</button>
             </div>
         </form>
     </div>
