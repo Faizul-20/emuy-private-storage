@@ -223,6 +223,23 @@ function resetUploadArea() {
 }
 
 // =================== UPLOAD ===================
+function saveSelectedFiles(event) {
+    selectedFiles = event.target.files;
+    const uploadArea = document.querySelector('.upload-area');
+    const uploadIcon = uploadArea.querySelector('.upload-icon');
+    const uploadText1 = uploadArea.querySelector('.upload-text-primary');
+    const uploadText2 = uploadArea.querySelector('.upload-text-secondary');
+
+    if (selectedFiles && selectedFiles.length > 0) {
+        uploadArea.style.borderColor = "#2ecc71";
+        uploadArea.style.background = "rgba(46, 204, 113, 0.1)";
+        uploadIcon.innerHTML = "✅";
+        uploadText1.textContent = `${selectedFiles.length} file(s) selected!`;
+        uploadText1.style.display = "block";
+        uploadText2.style.display = "none";
+    }
+}
+
 async function submitUploadForm(event) {
     event.preventDefault();
     if (!selectedFiles || selectedFiles.length === 0) {
@@ -232,38 +249,34 @@ async function submitUploadForm(event) {
 
     const formData = new FormData();
     for (let i = 0; i < selectedFiles.length; i++) {
-        formData.append("files", selectedFiles[i]); // Pastikan nama "files" sesuai dengan backend
+        formData.append("files", selectedFiles[i]);
     }
 
     const uploadArea = document.querySelector('.upload-area');
     const uploadIcon = uploadArea.querySelector('.upload-icon');
     const uploadText1 = uploadArea.querySelector('.upload-text-primary');
     const uploadText2 = uploadArea.querySelector('.upload-text-secondary');
+    const progressCircle = document.getElementById('progressCircle');
+    const progressRing = document.getElementById('progress-ring');
+    const progressText = document.getElementById('progress-text');
 
-    // Show uploading state
-    uploadIcon.innerHTML = "⏳";
-    uploadText1.textContent = "Uploading...";
-    uploadText1.style.display = "block";
-    uploadText2.style.display = "none";
-    uploadArea.style.borderColor = "#ffd782";
-    uploadArea.style.background = "rgba(255, 215, 130, 0.1)";
+    // Show progress
+    uploadText1.style.display = 'none';
+    uploadText2.style.display = 'none';
+    if (progressCircle) {
+        progressCircle.style.display = 'block';
+    }
 
     try {
-        console.log('Starting upload...', selectedFiles);
-
         const response = await fetch("/upload", {
             method: "POST",
             body: formData
         });
 
-        console.log('Upload response status:', response.status);
-
-        const responseText = await response.text();
-        console.log('Upload response:', responseText);
-
         if (response.ok) {
             uploadIcon.innerHTML = "✅";
             uploadText1.textContent = "Upload successful!";
+            uploadText1.style.display = "block";
             uploadArea.style.borderColor = "#2ecc71";
             uploadArea.style.background = "rgba(46, 204, 113, 0.1)";
 
@@ -273,17 +286,24 @@ async function submitUploadForm(event) {
                 closeUploadModal();
             }, 1500);
         } else {
-            throw new Error(responseText || `Upload failed with status: ${response.status}`);
+            throw new Error('Upload failed with status: ' + response.status);
         }
     } catch (err) {
         console.error('Upload error:', err);
         uploadIcon.innerHTML = "❌";
         uploadText1.textContent = "Upload failed!";
+        uploadText1.style.display = "block";
         uploadArea.style.borderColor = "#e74c3c";
         uploadArea.style.background = "rgba(231, 76, 60, 0.1)";
         customAlert('Upload failed!\n' + err.message, '❌');
+    } finally {
+        if (progressCircle) {
+            progressCircle.style.display = 'none';
+        }
+        uploadText2.style.display = "none";
     }
 }
+
 // =================== DRAG & DROP ===================
 function initializeDragAndDrop() {
     const uploadArea = document.querySelector('.upload-area');
